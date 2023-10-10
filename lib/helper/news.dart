@@ -7,7 +7,7 @@ class News{
   List<ArticleModel> news = [];
 
   Future<void> getNews() async{
-   Uri url='https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=4949a4183d79413a93e652d19dc3b2e9' as Uri;
+   Uri url='https://newsapi.org/v2/top-headlines?country=id&category=business&apiKey=4949a4183d79413a93e652d19dc3b2e9' as Uri;
 
     var response = await http.get(url);
     var jsonData = jsonDecode(response.body);
@@ -19,8 +19,11 @@ class News{
             author: element['author'],
             description: element['description'],
             url: element['url'],
-            urlToImage: element['urlToImage']
+            urlToImage: element['urlToImage'],
+            content: element['content']
           );
+
+          news.add(articleModel);
         }
       });
     }
