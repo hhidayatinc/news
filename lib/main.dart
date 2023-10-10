@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news/pages/home.dart';
-import 'package:news/services/api_services.dart';
 
 import 'model/post_model.dart';
 
