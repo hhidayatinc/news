@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:news/helper/data.dart';
 import 'package:news/model/article_model.dart';
 import 'package:news/model/category_model.dart';
+import 'package:news/pages/article_view.dart';
 
 import '../helper/news.dart';
 
@@ -73,8 +74,13 @@ class _HomeState extends State<Home> {
               Container(padding: EdgeInsets.only(top: 10),
                 child: ListView.builder(
                   shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: articles.length, itemBuilder:  (context, index) {
-                  return BlogTile(imageUrl: articles[index].urlToImage, title: articles[index].title, desc: articles[index].description);
+                  return BlogTile(
+                    imageUrl: articles[index].urlToImage,
+                    title: articles[index].title,
+                    desc: articles[index].description,
+                    url: articles[index].url,);
                 }),
               ),
             ],
@@ -104,7 +110,7 @@ class CategoryTile extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: imageUrl, width: 120, height: 60,fit: BoxFit.cover,
             ),
-          )
+          ),
           Container(
             alignment: Alignment.center,
             width: 120, height: 60,
@@ -125,18 +131,37 @@ class CategoryTile extends StatelessWidget {
 }
 
 class BlogTile extends StatelessWidget {
-  late final String imageUrl, title, desc;
-  BlogTile({required this.imageUrl, required this.title, required this.desc});
+  late final String imageUrl, title, desc, url;
+  BlogTile({required this.imageUrl, required this.title, required this.desc, required this.url});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Image.network(imageUrl),
-          Text(title),
-          Text(desc)
-        ],
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) =>
+                ArticleView(
+                    blogUrl: url,)));
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+                child: Image.network(imageUrl)),
+            SizedBox(height: 8,),
+            Text(title, style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+              fontSize: 17
+            )),
+            SizedBox(height: 8,),
+            Text(desc, style: TextStyle(
+              color: Colors.black54
+            ),)
+          ],
+        ),
       ),
     );
   }
